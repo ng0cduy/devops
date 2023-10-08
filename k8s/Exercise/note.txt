@@ -1,0 +1,14 @@
+minikube update-check: check version of minikube
+minukube start: start the cluster
+minukube stop: stop the cluster
+minukube delete: delete the cluster
+minikube cmd: create cluster from scratch
+kubectl: interact with the cluster
+kubectl cluster-info
+kubectl get nodes
+kubectl get namespaces = kubectl get ns
+kubectl get services -A: get service running in the cluster
+
+K8s Namespaces: isolated and organise the workload
+kubectl apply -f <file_name>
+kubectl delete -f <file_name> : delete namespace
