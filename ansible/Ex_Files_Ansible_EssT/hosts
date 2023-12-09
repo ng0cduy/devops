@@ -1,0 +1,28 @@
+10.0.1.[1:3]
+
+[all_hosts]
+target1 ansible_ssh_host=10.0.1.239 ansible_connection=local
+target2 ansible_ssh_host=10.0.1.94  ansible_connection=local
+target3 ansible_ssh_host=10.0.1.252 ansible_connection=local
+target4 ansible_ssh_host=10.0.1.133 ansible_connection=local
+target5 ansible_ssh_host=10.0.1.4   ansible_connection=local
+target6 ansible_ssh_host=10.0.1.82  ansible_connection=local
+
+[webservers]
+target1
+target2
+target3
+
+[dbservers]
+target4
+target5
+target6
+
+[backupservers]
+target6 backup_file=/tmp/test1
+
+[all:vars]
+temp_file=/tmp/test2
+
+[webservers:vars]
+temp_file=/tmp/test3

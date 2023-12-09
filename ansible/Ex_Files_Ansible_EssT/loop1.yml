@@ -1,0 +1,12 @@
+---
+- hosts: webservers
+  become: yes
+  vars:
+    packages: [git,vim,ruby]          
+  
+  tasks:
+    - name: Install packages 
+      apt:
+       name: '{{packages}}'
+       state: latest
+       

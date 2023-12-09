@@ -1,0 +1,35 @@
+---
+- hosts: webservers
+    
+  vars:
+    target: /tmp/idempotent.txt
+
+  tasks:
+  - name: An idempotent file creation task
+    copy:
+      src: files/idempotent.txt
+      dest: '{{target}}'
+
+  - name: Modify the file
+    command: sed -ie 's/file/change/' {{target}}
+
+  - name: Discover state
+    command: grep 'change' {{target}}
+    register: grep_state
+    ignore_errors: true
+
+  - name: Show the state of the file
+    debug:
+      var: grep_state.rc
+
+  - name: Print based on state - success
+    debug: 
+      msg: 
+      - "The change is there!" 
+    when: grep_state.rc == 0
+
+  - name: Print based on state - failed 
+    debug: 
+      msg:
+      - "The change is not there!"
+    when: grep_state.rc != 0

@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: find files and folders
+      ansible.builtin.find:
+        paths: /Users/ngocduy/Downloads
+        file_type: file
+        hidden: true
+    - name: install test
+      ansible.builtin.pip:
+        name: numpy
+

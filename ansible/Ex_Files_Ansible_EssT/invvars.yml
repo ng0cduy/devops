@@ -1,0 +1,9 @@
+---
+- hosts: webservers
+  
+  tasks:
+    - name: Create a file 
+      file:
+       dest: '{{temp_file}}'
+       state: '{{file_state}}'
+      when: temp_file is defined

@@ -1,0 +1,12 @@
+---
+- hosts: all_hosts
+  become: yes
+
+  tasks: 
+    - name: Upgrade in Redhat
+      when: ansible_os_family == "Redhat"
+      yum: name=* state=latest
+
+    - name: Upgrade in Debian
+      when: ansible_os_family == "Debian"
+      apt: upgrade=dist update_cache=yes

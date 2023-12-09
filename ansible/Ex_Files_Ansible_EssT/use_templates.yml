@@ -1,0 +1,17 @@
+---
+- name: Make sure Web Server is running
+  hosts: webservers
+  become: yes
+  vars:
+    webserver_message: "This is my clever message"
+
+  tasks:
+    - name: Start httpd
+      service: 
+        name: apache2
+        state: started 
+
+    - name: Create index.html using Jinja2
+      template: 
+        src: jinja2.j2
+        dest: /var/www/html/index.html

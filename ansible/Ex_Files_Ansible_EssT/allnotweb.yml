@@ -1,0 +1,10 @@
+---
+- hosts: all_hosts:!webservers
+  become: yes
+  
+  tasks:
+    - name: Uninstall testpackage and sync apt index 
+      apt:
+       name: testpackage
+       state: absent
+       update_cache: yes

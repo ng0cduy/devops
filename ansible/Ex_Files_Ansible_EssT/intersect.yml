@@ -1,0 +1,10 @@
+---
+- hosts: dbservers:&backupservers
+  become: yes
+  
+  tasks:
+    - name: Uninstall testpackage and sync apt index 
+      apt:
+       name: testpackage
+       state: absent
+       update_cache: yes
