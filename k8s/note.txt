@@ -1,0 +1,24 @@
+minikube update-check: check version of minikube
+minukube start: start the cluster
+minukube stop: stop the cluster
+minukube delete: delete the cluster
+minikube cmd: create cluster from scratch
+kubectl: modify the cluster
+kubectl: interact with the cluster
+kubectl cluster-info: Display cluster information
+kubectl get nodes
+kubectl get namespaces = kubectl get ns
+kubectl get pods -A: list the pods in every namespace
+kubectl get services -A: get service running in the cluster
+
+K8s Namespaces: isolated and organise the workload
+kubectl apply -f <file_name>  : apply namespaces for clusters
+kubectl delete -f <file_name> : delete namespaces
+
+# Deploying application into a namespace
+Pods: K8s resources that run applications and microservices
+kubectl get deployments -n <namespace>
+kubectl apply -f deployment.yaml
+kubectl get pod <pod_name> -n <namespace>
+
+# Check that your application is working with BusyBox
