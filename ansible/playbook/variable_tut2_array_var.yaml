@@ -1,0 +1,25 @@
+---
+- hosts:
+    - node1
+  vars:
+    students:
+      - Alice
+      - Mark
+      - Peter
+
+  tasks:
+  - name: Print all students name method 1
+    debug:
+      msg: "{{ students }}"
+  - name: Print all students name method 2
+    debug:
+      msg: "{{ students[0::] }}"
+  - name: Print 1st student name
+    debug:
+      msg: "{{ students[0] }}"
+  - name: Print 2nd student name
+    debug:
+      msg: "{{ students[1] }}"
+  - name: Print 3nd student name
+    debug:
+      msg: "{{ students[2] }}"

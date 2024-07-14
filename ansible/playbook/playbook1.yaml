@@ -1,0 +1,51 @@
+---
+
+- name: My play targeting all hosts
+  hosts: all
+  tasks:
+    - debug:
+        msg: 'Running on all hosts'
+
+
+- name: install the latest version of Apache
+  hosts:
+    - node1
+    - node2
+  tasks:
+    - debug:
+          msg: 'install the latest version of Apache on all hosts'
+    - name: install the latest version of Apache
+      yum:
+        name: httpd
+        state: latest
+      become: true
+
+- name: Install a list of packages
+  hosts:
+    - node1
+  tasks:
+    - debug:
+        msg: 'Install a list of packages on node1'
+    - name: Install a list of packages on node1
+      yum:
+        name:
+          - nginx
+          - postgresql
+          - postgresql-server
+        state: present
+      become: true
+
+- name: Uninstall a list of packages
+  hosts:
+    - node1
+  tasks:
+    - debug:
+        msg: 'Uninstall a list of packages on node1'
+    - name: Uninstall a list of packages on node1
+      yum:
+        name:
+          - nginx
+          - postgresql
+          - postgresql-server
+        state: absent
+      become: true

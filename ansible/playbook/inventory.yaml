@@ -1,0 +1,11 @@
+all:
+  children:
+     data_center:
+         children:
+            db_server:
+               hosts:
+                 node2: {}
+            web_server:
+               hosts:
+                 node1: {}
+     ungrouped: {}

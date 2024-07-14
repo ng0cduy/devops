@@ -1,0 +1,9 @@
+---
+- hosts: all
+  tasks:
+  - name: Ansible register variable example
+    shell: "date"
+    register: date
+
+  - debug:
+      var: date.stdout

@@ -1,0 +1,42 @@
+---
+- hosts:
+    - node1
+  vars:
+    greetings: Hello
+    asking: How are you?
+
+  tasks:
+    - name: Hello new members using with_items
+      debug:
+        msg: "{{ greetings }} {{ item }}. {{ asking }}"
+      # user:
+      #   name: '{{ item }}'
+      #   state: present
+      with_items:
+        - peter
+        - marry
+        - ['a','b']
+
+    - name: Hello new members using loop
+      debug:
+        msg: "{{ greetings }} {{ item }}. {{ asking }}"
+      # user:
+      #   name: '{{ item }}'
+      #   state: present
+      loop: "{{ ['marry', 'peter', ['a', 'b']] | flatten(1) }} "
+
+    - name: Hello new members using dictionary
+      debug:
+        msg:
+          - "{{ greetings }} {{ item.name }}. {{ asking }}"
+          - "Your ID is {{ item.uid }}"
+          - "Your role is {{ item.role }}"
+
+      loop:
+        - name: mike
+          uid: 1001
+          role: Administrator
+
+        - name: sandra
+          uid: 1002
+          role: Techie
