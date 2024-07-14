@@ -1,0 +1,11 @@
+- block:
+    - name: Try to run a command
+      command: /bin/false
+  rescue:
+    - name: Handle the failure
+      debug:
+        msg: "The command failed"
+  always:
+    - name: Always run this task
+      debug:
+        msg: "This task always runs"

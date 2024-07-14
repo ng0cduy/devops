@@ -1,0 +1,21 @@
+---
+- hosts: all
+  tasks:
+  - name: Check if a file exists
+    stat:
+      path: /home/ansible/a.sh
+    register: file_stat
+
+  # - name: debug file_stat
+  #   debug:
+  #     msg: "{{ file_stat }}"
+
+  - name: Fail if the file does not exist
+    debug:
+      msg: "File does not exist"
+    when: not file_stat.stat.exists
+
+  - name: Mark task as changed only if the file was modified in the last 24 hours
+    debug:
+      msg: "File was modified recently"
+    changed_when: file_stat.stat.mtime > (ansible_date_time.epoch | int) - 86400
