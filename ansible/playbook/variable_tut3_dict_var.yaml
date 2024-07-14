@@ -19,12 +19,25 @@
           city: Miami
 
   tasks:
-  - name: Ansible Dictionaries Usage Example
+  # - name: Ansible Dictionaries Usage Example
+  #   debug:
+  #     msg: " A list of student details: {{ students }}"
+  # - name: Ansible Dictionaries student Alice info
+  #   debug:
+  #     msg: " Alice details: {{ students.Alice }}"
+  # - name: Ansible Dictionaries student Alice age
+  #   debug:
+  #     msg: " Alice's age is: {{ students.Alice.age }}"
+  # - name: List by keys
+  #   debug:
+  #     msg:
+  #       - "{{ item.value.gender }}"
+  #       - "{{ item.value.age }}"
+  #       - "{{ item.value.city }}"
+  #   loop: "{{ students | dict2items }}"
+  - name: List by keys
     debug:
-      msg: " A list of student details: {{ students }}"
-  - name: Ansible Dictionaries student Alice info
-    debug:
-      msg: " Alice details: {{ students.Alice }}"
-  - name: Ansible Dictionaries student Alice age
-    debug:
-      msg: " Alice's age is: {{ students.Alice.age }}"
+      msg:
+        - "Student {{ item.key }} gender is {{ item.value.gender }}, {{ item.value.age }} years old and locate in  {{ item.value.city }}"
+    # with_dict: "{{ students }}"
+    loop: "{{ lookup('dict', students) }}"
