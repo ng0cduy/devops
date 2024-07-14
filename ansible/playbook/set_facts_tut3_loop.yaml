@@ -1,0 +1,20 @@
+---
+- name: Set Multiple Facts
+  hosts: all
+  tasks:
+    - name: Set facts in a loop
+      set_fact:
+        "{{ item.name }}": "{{ item.value }}"
+      loop:
+        - { name: Name, value: "sandpit" }
+        - { name: ApplicationID, value: "SPL-426" }
+        - { name: Owner, value: "NS" }
+        - { name: CostCentre, value: "V_NS" }
+
+    - name: Print all facts
+      debug:
+        msg: "Name: {{ Name }}, ApplicationID: {{ ApplicationID }}, Owner {{ Owner }}, CostCentre {{ CostCentre }} "
+
+    - name: Print facts
+      debug:
+        msg: "{{ ansible_facts }}"

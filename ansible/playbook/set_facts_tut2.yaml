@@ -1,0 +1,26 @@
+---
+- name: Calculate Disk Usage
+  hosts:
+  - node1
+  tasks:
+    - name: Get disk usage
+      command: df -h /
+      register: disk_usage
+
+    - name: Set disk usage fact
+      set_fact:
+        root_disk_usage: "{{ disk_usage.stdout_lines[1].split()[4] }}"
+
+    - name: Print disk usage
+      debug:
+        msg: "Root partition is {{ root_disk_usage }} full"
+
+    - name: Warn if disk usage is high
+      debug:
+        msg: "Warning: Root partition is almost full"
+      when: root_disk_usage | int > 80
+
+    - name: Notify that disk usage is safe to use
+      debug:
+        msg: "Warning: Root partition is safe to use (less than 10%)"
+      when: root_disk_usage | int < 10

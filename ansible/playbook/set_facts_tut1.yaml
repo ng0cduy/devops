@@ -1,0 +1,9 @@
+---
+- hosts: all
+  tasks:
+  - name: Set a simple fact
+    set_fact:
+      my_custom_fact: "Hello, Ansible!"
+  - name: Print the custom fact
+    debug:
+      msg: "{{ my_custom_fact }}"

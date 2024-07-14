@@ -4,8 +4,8 @@ all:
          children:
             db_server:
                hosts:
-                 node2: {}
+                 node1: {}
             web_server:
                hosts:
-                 node1: {}
+                 node2: {}
      ungrouped: {}
