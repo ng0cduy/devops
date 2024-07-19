@@ -1,0 +1,47 @@
+---
+- hosts: dbsystems
+  vars:
+    users:
+      - supervisor
+      - consultant
+  tasks:
+    - name: Ensure the user exists
+      user:
+        name: "{{ item }}"
+        home: /home/{{ item }}
+        state: present
+      loop: "{{ users }}"
+      become: yes
+
+    - name: Create .ssh directory for users
+      file:
+        path: /home/{{ item }}/.ssh
+        state: directory
+        mode: '0700'
+        owner: "{{ item }}"
+      loop: "{{ users }}"
+      become: true
+
+    - name: Copy authorized key for users from localhost
+      copy:
+        src: /home/ansible/keys/{{ item }}/authorized_keys
+        dest: /home/{{ item }}/.ssh/authorized_keys
+        owner: "{{ item }}"
+        mode: '0600'
+      loop: "{{ users }}"
+      become: true
+
+- name: Install and configure auditd
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install auditd
+      dnf:
+        name: audit
+        state: present
+
+    - name: Ensure auditd service is enabled and started
+      service:
+        name: auditd
+        state: started
+        enabled: yes

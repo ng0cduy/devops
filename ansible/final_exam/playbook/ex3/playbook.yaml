@@ -1,0 +1,26 @@
+---
+
+
+- name: Install and configure httpd
+  hosts: dbsystems
+  vars:
+    users:
+      - supervisor
+      - consultant
+  become: yes
+  tasks:
+    - name: Install httpd package
+      yum:
+        name: httpd
+        state: present
+
+    - name: Ensure httpd is running
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: Copy website files to /var/www/html
+      copy:
+        src: "aquarium/"
+        dest: /var/www/html/
