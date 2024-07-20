@@ -1,8 +1,5 @@
 ---
-
-
-- name: Q3
-  hosts: dbsystems
+- hosts: dbsystems
   vars:
     url: "https://drive.google.com/uc?id=1OGzCR0UG6qNZcOJmyuyptnR4HmUC_wjp&export=download"
     temp_unarchive_directory: "/tmp/unarchive_folder"
