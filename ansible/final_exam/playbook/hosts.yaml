@@ -1,0 +1,8 @@
+all:
+  children:
+    dbsystems:
+      hosts:
+        node1:
+          ansible_host: 198.19.249.67
+        node2:
+          ansible_host: 198.19.249.69
