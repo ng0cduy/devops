@@ -1,7 +1,0 @@
-all:
-  children:
-    dbsystems:
-        hosts:
-          node1: 198.19.249.67
-          node2: 198.19.249.69
-     ungrouped: {}
