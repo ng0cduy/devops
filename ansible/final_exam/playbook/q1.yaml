@@ -34,7 +34,9 @@
       loop: "{{ users }}"
 
 - name: Install and configure auditd
-  hosts: all
+  hosts:
+    - dbsystems
+    - localhost
   become: yes
   tasks:
     - name: Install auditd
