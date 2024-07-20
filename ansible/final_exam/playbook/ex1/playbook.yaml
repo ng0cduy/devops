@@ -5,6 +5,7 @@
       - supervisor
       - consultant
   tasks:
+
     - name: Ensure the user exists
       user:
         name: "{{ item }}"
@@ -20,6 +21,7 @@
         state: directory
         mode: '0755'
         owner: "{{ item }}"
+        group: "{{ item }}"
       loop: "{{ users }}"
       become: true
 
@@ -28,6 +30,7 @@
         src: /home/ansible/keys/{{ item }}/authorized_keys
         dest: /home/{{ item }}/.ssh/authorized_keys
         owner: "{{ item }}"
+        group: "{{ item }}"
         mode: '0600'
       loop: "{{ users }}"
       become: true
