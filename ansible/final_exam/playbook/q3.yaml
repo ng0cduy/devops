@@ -1,0 +1,76 @@
+---
+
+
+- name: Q3
+  hosts: dbsystems
+  vars:
+    url: "https://drive.google.com/uc?id=1OGzCR0UG6qNZcOJmyuyptnR4HmUC_wjp&export=download"
+    temp_unarchive_directory: "/tmp/unarchive_folder"
+  become: yes
+  tasks:
+    - name: Install httpd and unzip package
+      yum:
+        name:
+          - httpd
+          - unzip
+        state: present
+
+    - name: Ensure httpd is running
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: download website zip file
+      get_url:
+        url: "{{ url }}"
+        dest: /tmp/website.zip
+        mode: '644'
+      register: download_result
+
+    - name: ensure document root exists
+      file:
+        path: /var/www/html
+        state: directory
+        mode: 755
+
+    - name: Ensure destination directory exists
+      file:
+        path: "{{ temp_unarchive_directory }}"
+        state: directory
+
+    - name: unzip zip file
+      unarchive:
+        src: /tmp/website.zip
+        dest: "{{ temp_unarchive_directory }}"
+        remote_src: yes
+
+    - name: List top-level directories in the unarchive folder
+      shell: |
+        ls -d {{ temp_unarchive_directory }}/*/
+      register: dir_list
+      changed_when: false
+
+    - name: Copy website files to /var/www/html
+      command:
+        cmd: cp -r {{ item }} /var/
+      loop: "{{ dir_list.stdout_lines }}"
+
+    - name: set proper ownership and permission
+      file:
+        path: /var/www/html
+        owner: apache
+        group: apache
+        mode: '0755'
+
+    - name: restart httpd service
+      systemd:
+        name: httpd
+        state: restarted
+    - name: Delete a specific folder and its contents in /tmp
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+          - "{{ download_result.dest }}"
+          - "{{ temp_unarchive_directory }}"

@@ -1,5 +1,6 @@
 ---
 - hosts: dbsystems
+  become: yes
   vars:
     user: linuxthi
   tasks:
@@ -9,10 +10,17 @@
         home: /home/{{ user }}
         state: present
         group: "{{ user }}"
-      become: yes
     - name: Ensure a user can run sudo commands without a password
       lineinfile:
         path: /etc/sudoers
+        line: present
         line: '{{ user }} ALL=(ALL) NOPASSWD: ALL'
         validate: '/usr/sbin/visudo -cf %s'
-      become: yes
+    - name: Verify sudoers file
+      command: visudo -cf /etc/sudoers
+      register: output_status
+      changed_when: false
+
+    - name: print output
+      debug:
+        var: output_status.stdout_lines

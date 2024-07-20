@@ -4,6 +4,7 @@
     users:
       - supervisor
       - consultant
+  become: yes
   tasks:
 
     - name: Ensure the user exists
@@ -13,7 +14,6 @@
         state: present
         group: "{{ item }}"
       loop: "{{ users }}"
-      become: yes
 
     - name: Create .ssh directory for users
       file:
@@ -23,7 +23,6 @@
         owner: "{{ item }}"
         group: "{{ item }}"
       loop: "{{ users }}"
-      become: true
 
     - name: Copy authorized key for users from localhost
       copy:
@@ -33,7 +32,6 @@
         group: "{{ item }}"
         mode: '0600'
       loop: "{{ users }}"
-      become: true
 
 - name: Install and configure auditd
   hosts: all
