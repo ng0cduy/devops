@@ -8,6 +8,7 @@
         name: "{{ user }}"
         home: /home/{{ user }}
         state: present
+        group: "{{ user }}"
       become: yes
     - name: Ensure a user can run sudo commands without a password
       lineinfile:
