@@ -102,3 +102,5 @@
 
 ### Example set up
 ![alt text](k8s_arch_setup1.png)
+
+## Minikube and kubectl setup
