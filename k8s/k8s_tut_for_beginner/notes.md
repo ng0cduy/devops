@@ -200,3 +200,26 @@ So the Service talks directly to Pods, and the Deployment ensures those Pods exi
 ![alt text](img/demo_config_yaml-3.png)
 * Check status
 ![alt text](img/demo_config_yaml-4.png)
+
+## Demo Project: MongoDB and MongoExpress
+![alt text](overview.png)
+![alt text](overview1.png)
+![alt text](overview2.png)
+* Create secrets
+![alt text](create_secret.png)
+* Secret notes:
+![alt text](create_secret_notes.png)
+* Create secrets in base64:
+![alt text](create_secret_notes_1.png)
+
+* Deployment and Service can be in 1 file, since they belong together
+* Using ```---``` in a yaml file to separate between each yaml file
+
+* Service and pod have same IP
+![alt text](project1_1.png)
+
+### Create mongo express deployment - service
+* Overview
+![alt text](mongo-express-1.png)
+* Create a config Map
+![alt text](config_map.png)

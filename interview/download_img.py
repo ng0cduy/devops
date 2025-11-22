@@ -1,16 +1,21 @@
 import os
 import requests
 from bs4 import BeautifulSoup
+import argparse
 
 # File path to your HTML file
 file_path = 'file.html'
+parser = argparse.ArgumentParser(description='Download images from HTML file')
+parser.add_argument('--file', type=str, default='file.html', help='Path to the HTML file')
+parser.add_argument('--output', type=str, default='Graphana-Prometheus-Guide', help='Output folder for images')
+args = parser.parse_args()
 
 # Output folder (will be created if not exists)
-output_folder = ' CKA-study-guide'
+output_folder = args.output
 os.makedirs(output_folder, exist_ok=True)
 
 # Read HTML file
-with open(file_path, 'r', encoding='utf-8') as f:
+with open(args.file, 'r', encoding='utf-8') as f:
     html_content = f.read()
 
 # Parse HTML
