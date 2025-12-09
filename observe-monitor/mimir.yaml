@@ -1,0 +1,38 @@
+cat <<EOF > mimir.yaml
+multitenancy_enabled: false
+
+blocks_storage:
+  backend: filesystem
+  filesystem:
+    dir: /tmp/mimir/data
+
+compactor:
+  data_dir: /tmp/mimir/compactor
+  sharding_ring:
+    kvstore:
+      store: memberlist
+
+distributor:
+  ring:
+    kvstore:
+      store: memberlist
+
+ingester:
+  ring:
+    kvstore:
+      store: memberlist
+
+ruler:
+  rule_path: /tmp/mimir/rules
+
+store_gateway:
+  sharding_ring:
+    replication_factor: 1
+    kvstore:
+      store: memberlist
+
+user_addressable_storage:
+  backend: filesystem
+  filesystem:
+    dir: /tmp/mimir/user_addressable_storage
+EOF
