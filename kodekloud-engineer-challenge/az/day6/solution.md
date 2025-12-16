@@ -1,0 +1,1 @@
+```az network vnet create --name "xfusion-vnet" --location eastus -g $resource_group --subnet-name xfusion-subnet --subnet-prefixes 10.0.0.0/16```

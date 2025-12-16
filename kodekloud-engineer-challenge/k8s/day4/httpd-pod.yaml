@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httpd-pod
+spec:
+  containers:
+  - name: httpd-container
+    image: httpd:latest
+    resources:
+      requests:
+        cpu: "200m"
+        memory: "64Mi"
+      limits:
+        cpu: "500m"
+        memory: "128Mi"
