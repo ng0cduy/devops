@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pizza-manager
+spec:
+  replicas: 2              # We want 2 workers (Pods)
+  selector:
+    matchLabels:
+      job: pizza-maker
+  template:
+    metadata:
+      labels:
+        job: pizza-maker   # This tag identifies the workers
+    spec:
+      containers:
+      - name: worker
+        image: nginx       # The "skill" the worker has (Web Server)
+        ports:
+        - containerPort: 80

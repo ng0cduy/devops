@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pizza-shop
+spec:
+  replicas: 3  # Chúng ta có 3 đầu bếp
+  selector:
+    matchLabels:
+      app: pizza
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1       # Cho phép tạo thêm 1 pod mới trước
+      maxUnavailable: 0 # Không cho phép giảm số lượng pod khả dụng xuống dưới 3
+  template:
+    metadata:
+      labels:
+        app: pizza
+    spec:
+      containers:
+      - name: chef
+        image: hashicorp/http-echo
+        args:
+        - "-text=Pizza MENU V3 (Cheese)" # Menu cũ
+        - "-listen=:5678"
+        ports:
+        - containerPort: 5678
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "64Mi"
+          limits:
+            cpu: "100m"
+            memory: "128Mi"
+
+        # --- KEY CỦA BÀI HỌC: READINESS PROBE ---
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5678
+          initialDelaySeconds: 5  # Giả vờ đầu bếp cần 5s để rửa tay
+          periodSeconds: 5        # Kiểm tra lại mỗi 5s
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pizza-service
+spec:
+  selector:
+    app: pizza
+  ports:
+    - port: 80
+      targetPort: 5678

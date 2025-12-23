@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pizza-plaza-ingress
+  annotations:
+    # Dòng này cực quan trọng với Nginx Controller để rewrite path
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx # Hoặc 'traefik' tùy cluster của bạn
+  rules:
+  - host: my-pizza-shop.com # Domain giả định
+    http:
+      paths:
+      - path: /pizza
+        pathType: Prefix
+        backend:
+          service:
+            name: pizza-service
+            port:
+              number: 9090
+      - path: /salad
+        pathType: Prefix
+        backend:
+          service:
+            name: salad-service
+            port:
+              number: 80

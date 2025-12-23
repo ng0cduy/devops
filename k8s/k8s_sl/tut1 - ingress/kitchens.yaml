@@ -1,0 +1,68 @@
+# --- PIZZA APP ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pizza-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pizza
+  template:
+    metadata:
+      labels:
+        app: pizza
+    spec:
+      containers:
+      - name: pizza
+        image: hashicorp/http-echo
+        args:
+        - "-text=Welcome to the PIZZA Shop! 🍕" # Giả lập trả về text
+        ports:
+        - containerPort: 5678
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pizza-service
+spec:
+  selector:
+    app: pizza
+  ports:
+  - port: 9090        # Cổng của Service (Quầy)
+    targetPort: 5678 # Cổng của Pod (Bếp)
+
+# --- SALAD APP ---
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: salad-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: salad
+  template:
+    metadata:
+      labels:
+        app: salad
+    spec:
+      containers:
+      - name: salad
+        image: hashicorp/http-echo
+        args:
+        - "-text=Fresh SALAD here! 🥗"
+        ports:
+        - containerPort: 5678
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: salad-service
+spec:
+  selector:
+    app: salad
+  ports:
+  - port: 80
+    targetPort: 5678

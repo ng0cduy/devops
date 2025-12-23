@@ -22,3 +22,11 @@ kubectl apply -f deployment.yaml
 kubectl get pod <pod_name> -n <namespace>
 
 # Check that your application is working with BusyBox
+
+
+# The Enterprise Pillar: Namespaces & Resource Quotas
+In a real company, you don't just "deploy to the cluster." You deploy to a Namespace (a virtual cluster).
+
+Step 1: Create the Environment
+Instead of the default namespace, let's create a production environment.
+kubectl create namespace production
