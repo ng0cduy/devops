@@ -1,0 +1,51 @@
+# Number of replicas for the deployment.
+# Requirement: The deployment should have multiple replicas.
+replicaCount: 3
+
+image:
+  repository: my-registry/s3-sync-service
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+# The S3 bucket to sync data from.
+s3Bucket: "example-data-bucket"
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    # Requirement: expose the website on [myname].tecalliance.net
+    - host: myname.tecalliance.net
+      paths:
+        - path: /
+          pathType: Prefix
+
+# Requirement: Pods should only be deployed on nodes that belong to a specific node group labeled with test-nodes: true.
+nodeSelector:
+  test-nodes: "true"
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# Service Account configuration (for IRSA)
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account (e.g., for AWS IRSA)
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""

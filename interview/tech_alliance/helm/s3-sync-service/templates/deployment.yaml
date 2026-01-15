@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "s3-sync-service.fullname" . }}
+  labels:
+    {{- include "s3-sync-service.labels" . | nindent 4 }}
+spec:
+  # Requirement: The deployment should have multiple replicas.
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "s3-sync-service.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "s3-sync-service.selectorLabels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "s3-sync-service.fullname" . }}
+
+      # Requirement: Pods should only be deployed on nodes that belong to a specific node group labeled with test-nodes: true.
+      nodeSelector:
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
+
+      # Requirement: Each replica pod must be scheduled on different nodes to avoid co-location on the same node.
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  {{- include "s3-sync-service.selectorLabels" . | nindent 18 }}
+              topologyKey: kubernetes.io/hostname
+
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: S3_BUCKET
+              value: {{ .Values.s3Bucket | quote }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
