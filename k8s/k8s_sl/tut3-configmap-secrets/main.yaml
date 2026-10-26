@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pizza-deployment
+  namespace: pizza-shop
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pizza-app
+  template:
+    metadata:
+      labels:
+        app: pizza-app
+    spec:
+      containers:
+      - name: pizza-container
+        image: hashicorp/http-echo
+        # Chúng ta map biến môi trường vào câu lệnh khởi chạy
+        # $(PIZZA_NAME) sẽ được thay thế bằng giá trị lấy từ ConfigMap
+        args:
+        - "-text=Serving: $(PIZZA_NAME). Secret Key: $(SAUCE_KEY)"
+
+        # --- KHU VỰC INJECT BIẾN MÔI TRƯỜNG ---
+        env:
+        # 1. Lấy từ ConfigMap (Menu)
+        - name: PIZZA_NAME      # Tên biến môi trường trong Linux của Pod
+          valueFrom:
+            configMapKeyRef:
+              name: pizza-menu-config  # Tên file ConfigMap đã tạo ở Bước 1
+              key: PIZZA_NAME          # Key nằm trong file đó
+
+        # 2. Lấy từ Secret (Két sắt)
+        - name: SAUCE_KEY       # Tên biến môi trường trong Linux của Pod
+          valueFrom:
+            secretKeyRef:
+              name: pizza-secret-recipe # Tên file Secret đã tạo ở Bước 2
+              key: SECRET_SAUCE_KEY     # Key nằm trong file đó
+        ports:
+        - containerPort: 5678
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "64Mi"
+          limits:
+            cpu: "100m"
+            memory: "128Mi"
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5678
+          initialDelaySeconds: 5
+          periodSeconds: 5

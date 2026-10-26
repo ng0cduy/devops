@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pizza-menu-config
+  namespace: pizza-shop
+data:
+  # Key: Value (Dạng clear text)
+  PIZZA_NAME: "Pizza Hai San Deluxe (Loaded from ConfigMap test)"

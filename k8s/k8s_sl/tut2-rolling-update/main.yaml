@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pizza-shop
+  annotations:
+    kubernetes.io/change-cause: "Update menu to V3 (Spicy)"
 spec:
   replicas: 3  # Chúng ta có 3 đầu bếp
   selector:
@@ -21,7 +23,7 @@ spec:
       - name: chef
         image: hashicorp/http-echo
         args:
-        - "-text=Pizza MENU V3 (Cheese)" # Menu cũ
+        - "-text=Pizza MENU v3 (Spicy)" # Menu cũ
         - "-listen=:5678"
         ports:
         - containerPort: 5678
